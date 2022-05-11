@@ -2,10 +2,12 @@ package ru.job4j.todo.store;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Item;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Repository
 public class ItemStore {
@@ -14,6 +16,21 @@ public class ItemStore {
 
     public ItemStore(SessionFactory sf) {
         this.sf = sf;
+    }
+
+    private <T> T tx(final Function<Session, T> command) {
+        final Session session = sf.openSession();
+        final Transaction tx = session.beginTransaction();
+        try {
+            T rsl = command.apply(session);
+            tx.commit();
+            return rsl;
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 
     public Item addItem(Item item) {
@@ -26,62 +43,52 @@ public class ItemStore {
     }
 
     public List<Item> getAllItems() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List result = session.createQuery("from ru.job4j.todo.model.Item").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> session.createQuery("from ru.job4j.todo.model.Item").list()
+        );
     }
 
     public Item findItemById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        System.out.println(id);
-        Item item = session.get(Item.class, id);
-        session.getTransaction().commit();
-        session.close();
-        return item;
+        return this.tx(
+                session -> session.get(Item.class, id)
+        );
     }
 
     public List<Item> getItemsWhereDoneIs(boolean done) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List result = session.createQuery("from ru.job4j.todo.model.Item where done = :done")
-                .setParameter("done", done)
-                .list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> session.createQuery("from ru.job4j.todo.model.Item where done = :done")
+                        .setParameter("done", done)
+                        .list()
+        );
     }
 
     public boolean doneItemById(int itemId) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item item = session.get(Item.class, itemId);
-        item.setDone(true);
-        session.getTransaction().commit();
-        session.close();
-        return true;
+        return this.tx(
+                session -> {
+                    Item item = session.get(Item.class, itemId);
+                    item.setDone(true);
+                    return item.isDone();
+                }
+        );
     }
 
     public boolean deleteItemById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.createQuery("DELETE ru.job4j.todo.model.Item where id = :id")
-                .setParameter("id", id)
-                .executeUpdate();
-        session.getTransaction().commit();
-        session.close();
-        return true;
+        return this.tx(
+                session -> {
+                    session.createQuery("DELETE ru.job4j.todo.model.Item where id = :id")
+                            .setParameter("id", id)
+                            .executeUpdate();
+                    return true;
+                }
+        );
     }
 
     public Item updateItem(Item item) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.update(item);
-        session.getTransaction().commit();
-        session.close();
-        return item;
+        return this.tx(
+                session -> {
+                    session.update(item);
+                    return item;
+                }
+        );
     }
 }
