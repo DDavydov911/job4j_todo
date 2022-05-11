@@ -20,7 +20,6 @@ public class ItemStore {
         Session session = sf.openSession();
         session.beginTransaction();
         session.save(item);
-        item = (Item) session.merge(item);
         session.getTransaction().commit();
         session.close();
         System.out.println("store: " + item);
@@ -68,20 +67,25 @@ public class ItemStore {
     }
 
     public boolean doneItemById(int itemId) {
+        System.out.println("Store: itemId " + itemId);
         Session session = sf.openSession();
         session.beginTransaction();
-        session.createQuery("update ru.job4j.todo.model.Item set done = true where id = :id")
-                .setParameter("id", itemId);
+        Item item = session.get(Item.class, itemId);
+        item.setDone(true);
+        System.out.println("Store after set done true: " + item);
         session.getTransaction().commit();
         session.close();
         return true;
     }
 
-    public boolean deleteItemById(int itemId) {
+    public boolean deleteItemById(int id) {
+        System.out.println("Store deletItemById id:" + id);
         Session session = sf.openSession();
         session.beginTransaction();
-        session.createQuery("delete ru.job4j.todo.model.Item where id = :id")
-                .setParameter("id", itemId);
+//        session.remove(itemId);
+        session.createQuery("DELETE ru.job4j.todo.model.Item where id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
         session.getTransaction().commit();
         session.close();
         return true;

@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS items (
 );
 
 INSERT INTO items(
-    description, done)
-VALUES('Описание 1', false),
-      ('Описание 2', false);
+    description, created, done)
+VALUES('Task 1', current_timestamp, false),
+      ('Task 2', current_timestamp, false);

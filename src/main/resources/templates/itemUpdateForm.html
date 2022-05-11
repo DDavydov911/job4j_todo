@@ -43,7 +43,7 @@
             </div>
             <div class="card-body">
                 <form th:action="@{/updateItem}" method="POST" th:object="${item}">
-                    <input type="hidden" name="itemId" th:value="*{id}">
+                    <input type="hidden" name="id" th:value="*{id}">
                     <div class="form-group">
                         <label for="desc">Описание</label>
                         <input type="text" class="form-control" name="description" id="desc" th:field="*{description}">

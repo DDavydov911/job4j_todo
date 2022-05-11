@@ -32,7 +32,7 @@ public class ItemController {
     public String addItem(@RequestParam String description) {
         System.out.println(description);
         Item item = new Item(description);
-        System.out.println("contr: " + item);
+        System.out.println("controller: " + item);
         itemService.addItem(item);
         return "redirect:/index";
     }
@@ -52,15 +52,14 @@ public class ItemController {
     @GetMapping("/anItem/{itemId}")
     public String getItemById(Model model, @PathVariable("itemId") int id) {
         System.out.println("controller: id is " + id);
-//        Item item = itemService.findItemById(id);
         model.addAttribute("item", itemService.findItemById(id));
 //        System.out.println("mapping: " + item.toString());
         return "anItem";
     }
 
     @PostMapping("/doneItem")
-    public String done(@RequestParam int itemId) {
-        itemService.doneItemById(itemId);
+    public String done(@RequestParam int id) {
+        itemService.doneItemById(id);
         return "redirect:/index";
     }
 
@@ -72,13 +71,15 @@ public class ItemController {
 
     @PostMapping("/updateItem")
     public String updateItem(@ModelAttribute Item item) {
+        System.out.println("Controller: " + item);
         itemService.update(item);
         return "redirect:/anItem/" + item.getId();
     }
 
     @PostMapping("/deleteItem")
-    public String deleteItem(@RequestParam int itemId) {
-        itemService.deleteItemById(itemId);
+    public String deleteItem(@RequestParam int id) {
+        System.out.println("Controller deleteItem id:" + id);
+        itemService.deleteItemById(id);
         return "redirect:/index";
     }
 }
