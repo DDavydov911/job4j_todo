@@ -10,24 +10,23 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private int id;
 
-    @Column
     private String description;
 
-    @Column
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now();
 
-    @Column
     private boolean done;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Item() {
     }
 
     public Item(String description) {
         this.description = description;
-        this.created = LocalDateTime.now();
     }
 
     public Item(int id, String description) {
@@ -72,6 +71,14 @@ public class Item {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
