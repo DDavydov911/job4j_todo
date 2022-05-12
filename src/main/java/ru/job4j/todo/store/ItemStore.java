@@ -34,12 +34,12 @@ public class ItemStore {
     }
 
     public Item addItem(Item item) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(item);
-        session.getTransaction().commit();
-        session.close();
-        return item;
+        return this.tx(
+                session -> {
+                    session.save(item);
+                    return item;
+                }
+        );
     }
 
     public List<Item> getAllItems() {
