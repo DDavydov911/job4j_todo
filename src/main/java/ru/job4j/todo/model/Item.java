@@ -18,10 +18,6 @@ public class Item {
 
     private boolean done;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     public Item() {
     }
 
@@ -71,14 +67,6 @@ public class Item {
 
     public void setDone(boolean done) {
         this.done = done;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override
