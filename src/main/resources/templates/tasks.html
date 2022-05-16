@@ -22,7 +22,7 @@
 
 <body>
 <div class="container">
-    <h2>Добавить новую задачу</h2>
+    <h2>Список задач</h2>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,23 +41,39 @@
         </div>
     </nav>
     <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                Добавить новую задачу.
-            </div>
-            <div class="card-body">
-                <form th:action="@{/addItem}" method="POST">
-<!--                    <input type="hidden" name="id" value="0"/>-->
-                    <div>
-                        <label for="desc">Описание</label>
-                        <input type="text" class="form-control" name="description" id="desc">
-                    </div>
-<!--                    <input type="hidden" name="created" field=""/>-->
-<!--                    <input type="hidden" name="done" value="false"/>-->
-                    <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
-                </form>
-            </div>
-        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Дата создания</th>
+                <th scope="col">Выполнено</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item: ${items}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${item.created}"></td>
+                <td>
+                    <span th:if="${item.done}">
+                        <i class="fa fa-check-square-o"></i>
+                    </span>
+                    <span th:if="${!item.done}">
+                        <i class="fa fa-square-o"></i>
+                    </span>
+                </td>
+                <td>
+                    <a th:href="@{|/anItem/${item.id}|}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form th:action="@{/addItem}">
+            <button>Добавить задание</button>
+        </form>
     </div>
 </div>
 </body>

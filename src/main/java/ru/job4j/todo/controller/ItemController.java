@@ -4,9 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.ItemService;
 
-import java.time.LocalDateTime;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ItemController {
@@ -17,63 +18,85 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("items", itemService.getAllItems());
-        return "index";
+    @GetMapping("/tasks")
+    public String tasks(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("items", itemService.getAllItems(user));
+        return "tasks";
     }
 
     @GetMapping("/addItem")
-    public String getAddItemPage() {
+    public String getAddItemPage(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
         return "addItemPage";
     }
 
     @PostMapping("/addItem")
-    public String addItem(@RequestParam String description) {
+    public String addItem(@RequestParam String description,
+                          Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
         Item item = new Item(description);
+        item.setUser(user);
         itemService.addItem(item);
-        return "redirect:/index";
+        return "redirect:/tasks";
     }
 
     @GetMapping("/doneItems")
-    public String getDoneItemsPage(Model model) {
-        model.addAttribute("items", itemService.getAllDoneItems());
-        return "index";
+    public String getDoneItemsPage(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("items", itemService.getAllDoneItems(user));
+        return "tasks";
     }
 
     @GetMapping("/newItems")
-    public String getNewItemsPage(Model model) {
-        model.addAttribute("items", itemService.getAllNewItems());
-        return "index";
+    public String getNewItemsPage(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("items", itemService.getAllNewItems(user));
+        return "tasks";
     }
 
     @GetMapping("/anItem/{itemId}")
-    public String getItemById(Model model, @PathVariable("itemId") int id) {
+    public String getItemById(Model model, HttpSession session,
+                              @PathVariable("itemId") int id) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
         model.addAttribute("item", itemService.findItemById(id));
         return "anItem";
     }
 
     @PostMapping("/doneItem")
-    public String done(@RequestParam int id) {
+    public String done(@RequestParam int id,
+                       Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
         itemService.doneItemById(id);
-        return "redirect:/index";
+        return "redirect:/tasks";
     }
 
     @GetMapping("/updateItem/{itemId}")
     public String getUpdateItem(Model model, @PathVariable int itemId) {
-        model.addAttribute("item", itemService.findItemById(itemId));
+        Item item = itemService.findItemById(itemId);
+        model.addAttribute("item", item);
+        model.addAttribute("user", item.getUser());
         return "itemUpdateForm";
     }
 
     @PostMapping("/updateItem")
     public String updateItem(@ModelAttribute Item item) {
-        itemService.update(item);
-        return "redirect:/anItem/" + item.getId();
+        Item itemDB = itemService.findItemById(item.getId());
+        itemDB.setDescription(item.getDescription());
+        itemService.update(itemDB);
+        return "redirect:/tasks";
     }
 
     @PostMapping("/deleteItem")
     public String deleteItem(@RequestParam int id) {
         itemService.deleteItemById(id);
-        return "redirect:/index";
+        return "redirect:/tasks";
     }
 }

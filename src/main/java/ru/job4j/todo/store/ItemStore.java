@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.function.Function;
@@ -42,9 +43,12 @@ public class ItemStore {
         );
     }
 
-    public List<Item> getAllItems() {
+    public List<Item> getAllItems(User user) {
         return this.tx(
-                session -> session.createQuery("from ru.job4j.todo.model.Item").list()
+                session -> session.createQuery("from ru.job4j.todo.model.Item "
+                                + "where user_id = :userId ORDER BY id")
+                        .setParameter("userId", user.getId())
+                        .list()
         );
     }
 
@@ -54,10 +58,12 @@ public class ItemStore {
         );
     }
 
-    public List<Item> getItemsWhereDoneIs(boolean done) {
+    public List<Item> getItemsWhereDoneIs(boolean done, User user) {
         return this.tx(
-                session -> session.createQuery("from ru.job4j.todo.model.Item where done = :done")
+                session -> session.createQuery("from ru.job4j.todo.model.Item "
+                                + "where done = :done AND user_id =:userId ORDER BY id")
                         .setParameter("done", done)
+                        .setParameter("userId", user.getId())
                         .list()
         );
     }

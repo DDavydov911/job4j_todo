@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -16,49 +17,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>TODO list</title>
-</head>
 
+    <title>TODO-list</title>
+</head>
 <body>
 <div class="container">
-    <h2>Добавить новую задачу</h2>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Работа мечты</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div>Пользователь с такой почтой уже существует</div>
             <div class="navbar-nav">
-                <a class="nav-item nav-link" th:href="@{/tasks}">Все задачи</a>
-                <a class="nav-item nav-link" th:href="@{/doneItems}">Выполненные задачи</a>
-                <a class="nav-item nav-link" th:href="@{/newItems}">Новые задачи</a>
-                <a class="nav-item nav-link" th:if="${user != null}" th:href="@{/logout}">
-                    <span th:text="${user.username}"></span>
-                    <span> | Выйти</span>
-                </a>
+                <a class="nav-item nav-link" th:href="@{/registration}">Зарегистрироваться с другой почтой</a>
             </div>
+
         </div>
     </nav>
-    <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                Добавить новую задачу.
-            </div>
-            <div class="card-body">
-                <form th:action="@{/addItem}" method="POST">
-<!--                    <input type="hidden" name="id" value="0"/>-->
-                    <div>
-                        <label for="desc">Описание</label>
-                        <input type="text" class="form-control" name="description" id="desc">
-                    </div>
-<!--                    <input type="hidden" name="created" field=""/>-->
-<!--                    <input type="hidden" name="done" value="false"/>-->
-                    <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>

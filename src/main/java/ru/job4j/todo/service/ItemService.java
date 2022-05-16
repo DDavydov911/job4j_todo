@@ -2,6 +2,7 @@ package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.ItemStore;
 
 import java.util.List;
@@ -19,21 +20,20 @@ public class ItemService {
         return itemStore.addItem(item);
     }
 
-    public List<Item> getAllItems() {
-        return itemStore.getAllItems();
+    public List<Item> getAllItems(User user) {
+        return itemStore.getAllItems(user);
     }
 
     public Item findItemById(int id) {
-        System.out.println("service: id is " + id);
         return itemStore.findItemById(id);
     }
 
-    public List<Item> getAllNewItems() {
-        return itemStore.getItemsWhereDoneIs(false);
+    public List<Item> getAllNewItems(User user) {
+        return itemStore.getItemsWhereDoneIs(false, user);
     }
 
-    public List<Item> getAllDoneItems() {
-        return itemStore.getItemsWhereDoneIs(true);
+    public List<Item> getAllDoneItems(User user) {
+        return itemStore.getItemsWhereDoneIs(true, user);
     }
 
     public boolean doneItemById(int itemId) {
