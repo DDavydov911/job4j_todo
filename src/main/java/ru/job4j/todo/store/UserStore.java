@@ -19,16 +19,17 @@ public class UserStore {
         this.sf = sf;
     }
 
-    private <T> T tx(final Function<Session, T> command) {
+    private <T> Optional<T> tx(final Function<Session, T> command) {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
         try {
             T rsl = command.apply(session);
             tx.commit();
-            return rsl;
+            return Optional.of(rsl);
         } catch (final Exception e) {
             session.getTransaction().rollback();
-            throw e;
+            e.printStackTrace();
+            return Optional.empty();
         } finally {
             session.close();
         }
@@ -37,39 +38,16 @@ public class UserStore {
     public Optional<User> add(User user) {
         return this.tx(
                 session -> {
-                    List users = session.createQuery(
-                                    "from ru.job4j.todo.model.User where email = :email"
-                            )
-                            .setParameter("email", user.getEmail())
-                            .list();
-                    if (users.isEmpty()) {
-                        session.save(user);
-                        return Optional.of(user);
-                    }
-                    return Optional.empty();
+                    session.save(user);
+                    return user;
                 }
         );
     }
 
-    /**
-     * public Optional<User> add(User user) {
-     * return this.tx(
-     * session -> {
-     * try {
-     * session.save(user);
-     * return Optional.of(user);
-     * } catch (ConstraintViolationException ex) {
-     * return Optional.empty();
-     * }
-     * }
-     * );
-     * }
-     */
-
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
         return this.tx(
                 session -> {
-                    List users = session.createQuery(
+                    var users = session.createQuery(
                                     "from ru.job4j.todo.model.User where email = :email"
                             )
                             .setParameter("email", email)
@@ -77,10 +55,10 @@ public class UserStore {
                     if (!users.isEmpty()) {
                         User user = (User) users.get(0);
                         if (user.getPassword().equals(password)) {
-                            return Optional.of(user);
+                            return user;
                         }
                     }
-                    return Optional.empty();
+                    return null;
                 }
         );
     }
