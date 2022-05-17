@@ -15,12 +15,7 @@ CREATE TABLE IF NOT EXISTS items (
     done BOOLEAN,
     user_id INTEGER NOT NULL REFERENCES users (id)
 );
--- Как добавить поле timestamp в H2? Пишет: Column count does not match; SQL statement:
---
---
+
 INSERT INTO items(description, created, done) VALUES('Task 1', timestamp.now(), false, 1);
 INSERT INTO items(description, created, done) VALUES('Task 2', timestamp.now(), false, 1);
 
-
--- INSERT INTO items(description, created, done) VALUES('Task 1', current_timestamp, false, 1);
--- INSERT INTO items(description, created, done) VALUES('Task 2', current_timestamp, false, 1);
