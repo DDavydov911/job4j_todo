@@ -11,11 +11,11 @@ INSERT INTO users(username, email, password) VALUES('Ivan', 'yes@mail.com', 'qwe
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
     description TEXT NOT NULL,
-    created TIMESTAMP,
+    created TIMESTAMP default CURRENT_TIMESTAMP,
     done BOOLEAN,
     user_id INTEGER NOT NULL REFERENCES users (id)
 );
 
-INSERT INTO items(description, created, done) VALUES('Task 1', timestamp.now(), false, 1);
-INSERT INTO items(description, created, done) VALUES('Task 2', timestamp.now(), false, 1);
+INSERT INTO items(description, done, user_id) VALUES('Task 1', false, 1);
+-- INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
 
