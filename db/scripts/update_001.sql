@@ -17,5 +17,5 @@ CREATE TABLE IF NOT EXISTS items (
 );
 
 INSERT INTO items(description, done, user_id) VALUES('Task 1', false, 1);
--- INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
+INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
 
