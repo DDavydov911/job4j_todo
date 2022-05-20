@@ -24,7 +24,10 @@ CREATE TABLE IF NOT EXISTS categoties (
     name VARCHAR(255),
 );
 
-INSERT INTO items(name) VALUES('Home'), ('Family'), ('Health'), ('Job');
+INSERT INTO items(name) VALUES('Home');
+INSERT INTO items(name) VALUES('Family');
+INSERT INTO items(name) VALUES('Health');
+INSERT INTO items(name) VALUES('Job');
 
 CREATE TABLE items_categories(
     id serial primary key,
@@ -32,5 +35,7 @@ CREATE TABLE items_categories(
     categories_id integer references categories(id)
 );
 
-INSERT INTO items_categories(item_id, categories_id)
-VALUES(1, 1), (1, 2), (2, 3), (2, 4);
+INSERT INTO items_categories(item_id, categories_id) VALUES(1, 1);
+INSERT INTO items_categories(item_id, categories_id) VALUES(1, 2);
+INSERT INTO items_categories(item_id, categories_id) VALUES(2, 3);
+INSERT INTO items_categories(item_id, categories_id) VALUES(2, 4);
