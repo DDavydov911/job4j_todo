@@ -19,3 +19,18 @@ CREATE TABLE IF NOT EXISTS items (
 INSERT INTO items(description, done, user_id) VALUES('Task 1', false, 1);
 INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
 
+CREATE TABLE IF NOT EXISTS categoties (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+);
+
+INSERT INTO items(name) VALUES('Home'), ('Family'), ('Health'), ('Job');
+
+CREATE TABLE items_categories(
+    id serial primary key,
+    item_id integer references item(id),
+    categories_id integer references categories(id)
+);
+
+INSERT INTO items_categories(item_id, categories_id)
+VALUES(1, 1), (1, 2), (2, 3), (2, 4);
