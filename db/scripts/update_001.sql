@@ -21,17 +21,17 @@ INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
 
 CREATE TABLE IF NOT EXISTS categoties (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255)
+    `name` VARCHAR(255)
 );
 
-INSERT INTO items(name) VALUES('Home');
-INSERT INTO items(name) VALUES('Family');
-INSERT INTO items(name) VALUES('Health');
-INSERT INTO items(name) VALUES('Job');
+INSERT INTO items(`name`) VALUES('Home');
+INSERT INTO items(`name`) VALUES('Family');
+INSERT INTO items(`name`) VALUES('Health');
+INSERT INTO items(`name`) VALUES('Job');
 
 CREATE TABLE items_categories(
     id serial primary key,
-    item_id integer references item(id),
+    item_id integer references items(id),
     categories_id integer references categories(id)
 );
 
