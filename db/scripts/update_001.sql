@@ -21,7 +21,7 @@ INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
 
 CREATE TABLE IF NOT EXISTS categoties (
     id SERIAL PRIMARY KEY,
-    `name` VARCHAR(255),
+    `name` VARCHAR(255)
 );
 
 INSERT INTO items(`name`) VALUES('Home');
