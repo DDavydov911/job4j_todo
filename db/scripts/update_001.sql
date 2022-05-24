@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS categoties (
     `name` VARCHAR(255)
 );
 
-INSERT INTO items(`name`) VALUES('Home');
-INSERT INTO items(`name`) VALUES('Family');
-INSERT INTO items(`name`) VALUES('Health');
-INSERT INTO items(`name`) VALUES('Job');
+INSERT INTO categoties(`name`) VALUES('Home');
+INSERT INTO categoties(`name`) VALUES('Family');
+INSERT INTO categoties(`name`) VALUES('Health');
+INSERT INTO categoties(`name`) VALUES('Job');
 
 CREATE TABLE items_categories(
     id serial primary key,
