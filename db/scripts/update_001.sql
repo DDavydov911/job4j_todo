@@ -19,15 +19,15 @@ CREATE TABLE IF NOT EXISTS items (
 INSERT INTO items(description, done, user_id) VALUES('Task 1', false, 1);
 INSERT INTO items(description, done, user_id) VALUES('Task 2', false, 1);
 
-CREATE TABLE IF NOT EXISTS categoties (
+CREATE TABLE IF NOT EXISTS categories (
     id SERIAL PRIMARY KEY,
     `name` VARCHAR(255)
 );
 
-INSERT INTO categoties(`name`) VALUES('Home');
-INSERT INTO categoties(`name`) VALUES('Family');
-INSERT INTO categoties(`name`) VALUES('Health');
-INSERT INTO categoties(`name`) VALUES('Job');
+INSERT INTO categories(`name`) VALUES('Home');
+INSERT INTO categories(`name`) VALUES('Family');
+INSERT INTO categories(`name`) VALUES('Health');
+INSERT INTO categories(`name`) VALUES('Job');
 
 CREATE TABLE items_categories(
     id serial primary key,
