@@ -10,7 +10,6 @@ import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.ItemService;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -29,6 +28,7 @@ public class ItemController {
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
         model.addAttribute("items", itemService.getAllItems(user));
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "tasks";
     }
 

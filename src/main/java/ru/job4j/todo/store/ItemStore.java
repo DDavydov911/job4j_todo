@@ -43,10 +43,10 @@ public class ItemStore {
         );
     }
 
-    public List<Item> getAllItems(User user) {
+    public List<Item> getAllItemsOfUser(User user) {
         return this.tx(
-                session -> session.createQuery("from ru.job4j.todo.model.Item "
-                                + "where user_id = :userId ORDER BY id")
+                session -> session.createQuery("SELECT DISTINCT i FROM ru.job4j.todo.model.Item i"
+                                + " JOIN FETCH i.categories where user_id = :userId ORDER BY i.id")
                         .setParameter("userId", user.getId())
                         .list()
         );

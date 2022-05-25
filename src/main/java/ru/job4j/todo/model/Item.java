@@ -97,10 +97,15 @@ public class Item {
 
     @Override
     public String toString() {
+        String result = "";
+        for (Category category : categories) {
+            result += category.getName() + " ";
+        }
         return "Item{"
                 + "id=" + id
                 + ", description='" + description
                 + '\''
+                + ", categories: [" + result + "]"
                 + ", created=" + created
                 + ", done=" + done
                 + '}';

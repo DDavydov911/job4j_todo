@@ -21,7 +21,7 @@ public class ItemService {
     }
 
     public List<Item> getAllItems(User user) {
-        return itemStore.getAllItems(user);
+        return itemStore.getAllItemsOfUser(user);
     }
 
     public Item findItemById(int id) {

@@ -46,14 +46,23 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Описание</th>
+                <th scope="col">Категория</th>
                 <th scope="col">Дата создания</th>
                 <th scope="col">Выполнено</th>
+                <th scope="col">Редактировать</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item: ${items}">
                 <td th:text="${item.id}"></td>
                 <td th:text="${item.description}"></td>
+                <td>
+                    <table>
+                        <tr th:each="category: ${item.categories}">
+                            <td th:text="${category.name}"></td>
+                        </tr>
+                    </table>
+                </td>
                 <td th:text="${item.created}"></td>
                 <td>
                     <span th:if="${item.done}">
